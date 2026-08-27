@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>SafeEdu : Empowering Disaster Preparedness</title>
+  
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <!-- Google Fonts for Modern UI & Certificate Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Great+Vibes&family=Montserrat:wght@400;500;600;700;800&family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Ambient Glow Background Blobs -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <!-- Hero Header -->
+  <header id="banner" class="banner hero">
+    <div class="hero-inner">
+      <h1 id="title">SafeEdu : Empowering Disaster Preparedness</h1>
+      <p id="subtitle">Interactive Learning Modules for Schools, Colleges and Communities</p>
+
+      <!-- Glassmorphic Controls Bar -->
+      <div class="header-controls">
+        <!-- Language Selector -->
+        <div class="control-group">
+          <span class="control-icon">🌐</span>
+          <label for="language" id="languageLabel">Language:</label>
+          <select id="language" onchange="changeLanguage()">
+            <option value="en">English</option>
+            <option value="hi">हिन्दी</option>
+            <option value="bn">বাংলা</option>
+          </select>
+        </div>
+
+        <!-- Theme Selector -->
+        <div class="control-group">
+          <span class="control-icon" id="themeIcon">🌓</span>
+          <label for="themeSelect" id="themeLabel">Theme:</label>
+          <select id="themeSelect" onchange="changeTheme()">
+            <option value="light" id="optThemeLight">Light Mode</option>
+            <option value="dark" id="optThemeDark">Dark Mode</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- News Banner Carousel -->
+  <div class="banner-container">
+    <div class="banner-track">
+      <a href="https://ndma.gov.in" target="_blank"><img src="banner1.jpeg" alt="Earthquake Alerts"></a>
+      <a href="https://imd.gov.in" target="_blank"><img src="banner2.jpeg" alt="Cyclone Alerts"></a>
+      <a href="https://reliefweb.int/disasters" target="_blank"><img src="banner3.jpeg" alt="Global Disaster News"></a>
+      <a href="https://www.unisdr.org/" target="_blank"><img src="banner4.webp" alt="UN Disaster Risk Reduction"></a>
+      <a href="https://www.who.int/emergencies" target="_blank"><img src="banner5.avif" alt="Pandemic & Health Emergencies"></a>
+      <a href="https://www.fema.gov/disaster" target="_blank"><img src="banner6.jpeg" alt="FEMA Disaster Updates"></a>
+      <a href="https://www.bbc.com/news/world/disasters" target="_blank"><img src="banner7.jpg" alt="BBC Disaster News"></a>
+      <a href="https://timesofindia.indiatimes.com/topic/natural-disaster" target="_blank"><img src="banner8.jpg" alt="India Disaster News"></a>
+      <!-- Duplicated set for seamless animation -->
+      <a href="https://ndma.gov.in" target="_blank"><img src="banner1.jpeg" alt="Earthquake Alerts"></a>
+      <a href="https://imd.gov.in" target="_blank"><img src="banner2.jpeg" alt="Cyclone Alerts"></a>
+      <a href="https://reliefweb.int/disasters" target="_blank"><img src="banner3.jpeg" alt="Global Disaster News"></a>
+      <a href="https://www.unisdr.org/" target="_blank"><img src="banner4.webp" alt="UN Disaster Risk Reduction"></a>
+      <a href="https://www.who.int/emergencies" target="_blank"><img src="banner5.avif" alt="Pandemic & Health Emergencies"></a>
+      <a href="https://www.fema.gov/disaster" target="_blank"><img src="banner6.jpeg" alt="FEMA Disaster Updates"></a>
+      <a href="https://www.bbc.com/news/world/disasters" target="_blank"><img src="banner7.jpg" alt="BBC Disaster News"></a>
+      <a href="https://timesofindia.indiatimes.com/topic/natural-disaster" target="_blank"><img src="banner8.jpg" alt="India Disaster News"></a>
+    </div>
+  </div>
+
+  <main>
+    <!-- FEATURE 1: REAL-TIME SITUATIONAL AWARENESS BEACON -->
+    <section class="feature-panel beacon-panel" id="beaconPanel">
+      <div class="beacon-header">
+        <div class="radar-scan-wrapper">
+          <div class="beacon-pulse"></div>
+        </div>
+        <div>
+          <h3 id="beaconTitle">🛰️ Live Geo-Fenced Alert Beacon</h3>
+          <p class="panel-subtext" id="beaconSubtext">Automated real-time proximity detection to India's high-risk geological hotspots</p>
+        </div>
+      </div>
+      <div class="beacon-body">
+        <p id="beaconStatus" class="beacon-status">Acquiring current GPS coordinates to calculate regional threat index...</p>
+        <div id="beaconRiskBox" class="beacon-risk-box hidden">
+          <div class="risk-meter-header">
+            <span id="riskMeterLabel">Threat Probability Level</span>
+            <span id="riskPercentage">Analyzing...</span>
+          </div>
+          <div class="risk-meter"><span id="riskMeterFill"></span></div>
+          <div id="beaconDetails" class="beacon-details"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+      <div class="search-input-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search" placeholder="Search disaster preparedness modules..." onkeyup="searchModules()">
+      </div>
+    </div>
+
+    <!-- Modules Grid -->
+    <section id="modules" class="modules">
+      <div class="section-title-wrap">
+        <h2 id="selectModule">📚 Select a Disaster Module</h2>
+        <p class="section-subtext" id="modulesSubtext">Interactive training simulations, drill protocols, and helpline quick-access</p>
+      </div>
+      
+      <div class="cards">
+        
+        <div class="card" onclick="loadModule('earthquake')">
+          <div class="card-img-wrap">
+            <img id="earthquakeImg" src="Earthquake.png" alt="Earthquake" />
+            <div class="card-tag" id="tag_earthquake">Seismic</div>
+          </div>
+          <div class="card-content">
+            <div class="module-card" id="earthquakeTitle">🌍 Earthquake Safety</div>
+            <p id="earthquakeDesc">Drop, Cover, Hold – Stay Safe from Shakes.</p>
+            <div class="ticker-box">
+              <div class="ticker-track" id="earthquakeTicker"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" onclick="loadModule('flood')">
+          <div class="card-img-wrap">
+            <img id="floodImg" src="flood.jpg" alt="Flood" />
+            <div class="card-tag" id="tag_flood">Hydrological</div>
+          </div>
+          <div class="card-content">
+            <div class="module-card" id="floodTitle">🌊 Flood Safety</div>
+            <p id="floodDesc">Move to Higher Ground, Protect Your Life.</p>
+            <div class="ticker-box">
+              <div class="ticker-track" id="floodTicker"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" onclick="loadModule('fire')">
+          <div class="card-img-wrap">
+            <img id="fireImg" src="Fire.jpg" alt="Fire" />
+            <div class="card-tag" id="tag_fire">Thermal</div>
+          </div>
+          <div class="card-content">
+            <div class="module-card" id="fireTitle">🔥 Fire Safety</div>
+            <p id="fireDesc">Stay Low, Stay Calm, Stop the Flames.</p>
+            <div class="ticker-box">
+              <div class="ticker-track" id="fireTicker"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" onclick="loadModule('pandemic')">
+          <div class="card-img-wrap">
+            <img id="pandemicImg" src="pandemic.avif" alt="Pandemic" />
+            <div class="card-tag" id="tag_pandemic">Biological</div>
+          </div>
+          <div class="card-content">
+            <div class="module-card" id="pandemicTitle">🦠 Pandemic Preparedness</div>
+            <p id="pandemicDesc">Be prepared during pandemics.</p>
+            <div class="ticker-box">
+              <div class="ticker-track" id="pandemicTicker"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" onclick="loadModule('heatwave')">
+          <div class="card-img-wrap">
+            <img id="heatwaveImg" src="heatwave.jpg" alt="Heatwave" />
+            <div class="card-tag" id="tag_heatwave">Climatic</div>
+          </div>
+          <div class="card-content">
+            <div class="module-card" id="heatwaveTitle">☀️ Heatwave Safety</div>
+            <p id="heatwaveDesc">Stay hydrated and avoid peak afternoon heat.</p>
+            <div class="ticker-box">
+              <div class="ticker-track" id="heatwaveTicker"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" onclick="loadModule('landslide')">
+          <div class="card-img-wrap">
+            <img id="landslideImg" src="landslide.jpg" alt="Landslide" />
+            <div class="card-tag" id="tag_landslide">Geological</div>
+          </div>
+          <div class="card-content">
+            <div class="module-card" id="landslideTitle">🏔️ Landslide Safety</div>
+            <p id="landslideDesc">Stay away from steep slopes during heavy rains.</p>
+            <div class="ticker-box">
+              <div class="ticker-track" id="landslideTicker"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" onclick="loadModule('cyclone')">
+          <div class="card-img-wrap">
+            <img id="cycloneImg" src="cyclone.jpg" alt="Cyclone" />
+            <div class="card-tag" id="tag_cyclone">Atmospheric</div>
+          </div>
+          <div class="card-content">
+            <div class="module-card" id="cycloneTitle">🌀 Cyclone Safety</div>
+            <p id="cycloneDesc">Stay indoors and follow official alerts.</p>
+            <div class="ticker-box">
+              <div class="ticker-track" id="cycloneTicker"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Active Module Interactive View -->
+    <section id="moduleContent" class="module-content hidden">
+      <button class="back-btn" id="backBtn" onclick="goBack()">⬅ Back to Modules</button>
+      <div id="content"></div>
+    </section>
+
+    <!-- FEATURE 2: TIMED SURVIVAL DECISION SIMULATOR -->
+    <section class="feature-panel" id="simulatorSection">
+      <div class="section-title-wrap">
+        <h2 id="simTitle">🎮 Timed Survival Decision Simulator</h2>
+        <p id="simDesc">Test your live instincts under real disaster conditions with active timer pressure.</p>
+      </div>
+      
+      <div id="simContainer" class="sim-container">
+        <div class="sim-header">
+          <span id="simDisasterBadge" class="sim-badge">Scenario: Loading...</span>
+          <span id="simTimer" class="sim-timer">⏱️ 15s</span>
+          <span id="simScore" class="sim-score">Survival Index: 100%</span>
+        </div>
+        <div id="simScenarioText" class="sim-scenario-text"></div>
+        <div id="simOptionsGrid" class="sim-options-grid"></div>
+        <div id="simFeedback" class="sim-feedback hidden"></div>
+        <button id="simRestartBtn" class="sim-btn hidden" onclick="startSurvivalSimulation()">🔄 Restart Scenario</button>
+      </div>
+    </section>
+
+    <!-- FEATURE 3: COMMUNITY & EMERGENCY COORDINATION -->
+    <section class="feature-panel" id="coordinationSection">
+      <div class="section-title-wrap">
+        <h2 id="coordTitle">🤝 Community Emergency Coordination & SOS</h2>
+        <p id="coordDesc">Instant offline-ready SOS broadcasting and verified nearby shelter routing.</p>
+      </div>
+      
+      <div class="coord-grid">
+        <!-- SOS Generator Box -->
+        <div class="coord-card">
+          <div class="coord-card-header">
+            <span class="coord-icon">🚨</span>
+            <div>
+              <h3 id="sosCardTitle">One-Tap "I Am Safe" / SOS Broadcast</h3>
+              <p id="sosCardDesc">Generates quick formatted status with exact GPS link for WhatsApp / SMS pings.</p>
+            </div>
+          </div>
+          <div class="coord-btn-group">
+            <button class="coord-btn safe-btn" id="btnSendSafe" onclick="sendSOSBroadcast('safe')">✅ Send "I Am Safe"</button>
+            <button class="coord-btn danger-btn" id="btnSendDanger" onclick="sendSOSBroadcast('danger')">🆘 Send Urgent SOS</button>
+          </div>
+          <div id="sosOutput" class="sos-output hidden"></div>
+        </div>
+
+        <!-- Crowdsourced Hazard Reporter -->
+        <div class="coord-card">
+          <div class="coord-card-header">
+            <span class="coord-icon">📍</span>
+            <div>
+              <h3 id="radarTitle">Crowdsourced Incident Radar</h3>
+              <p id="radarDesc">Pin an active local danger (waterlogging, fallen wires, blocked bridge) on the map.</p>
+            </div>
+          </div>
+          <form onsubmit="submitCrowdsourcedHazard(event)" class="hazard-form">
+            <input type="text" id="hazardDescription" placeholder="Hazard detail (e.g. Broken live electric wire)" required />
+            <select id="hazardCategory">
+              <option value="waterlogging" id="opt_waterlogging">🌊 Deep Waterlogging</option>
+              <option value="structural" id="opt_structural">🏚️ Collapsed Structure / Obstruction</option>
+              <option value="fire" id="opt_fire">🔥 Live Fire / Sparking</option>
+              <option value="landslide" id="opt_landslide">⛰️ Blocked Roadway / Landslide</option>
+            </select>
+            <button type="submit" class="coord-btn primary-action" id="btnMarkHazard">📌 Mark Hazard on Map</button>
+          </form>
+        </div>
+
+        <!-- Shelter Finder -->
+        <div class="coord-card full-width">
+          <div class="coord-card-header">
+            <span class="coord-icon">🏥</span>
+            <div>
+              <h3 id="shelterTitle">Active Relief Camp & Shelter Directory</h3>
+              <p class="panel-subtext" id="shelterSubtext">Real-time distance calculation from your verified geolocation</p>
+            </div>
+          </div>
+          <div id="shelterList" class="shelter-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Disaster Map Section -->
+    <section id="mapSection" class="map-section">
+      <div class="section-title-wrap">
+        <h2 id="mapTitle">🌍 Disaster-Prone Zones Map</h2>
+        <p id="mapDesc">This map highlights regions vulnerable to natural disasters across India.</p>
+      </div>
+      <div id="map"></div>
+    </section>
+  </main>
+
+  <!-- Floating Chatbot Launcher Button -->
+  <button id="chatbotToggleBtn" class="chatbot-launcher-btn" onclick="toggleChatbot()" title="Open Assistant">
+    <span class="launcher-icon">🤖</span>
+    <span class="launcher-pulse"></span>
+  </button>
+
+  <!-- Floating Chatbot Box -->
+  <div class="chatbot-container hidden" id="chatbot">
+    <div class="chatbot-header">
+      <div class="chat-header-info">
+        <span class="chat-status-dot"></span>
+        <span id="chatHeader">Emergency Assistant 🤖</span>
+      </div>
+      <button class="chatbot-min-btn" onclick="toggleChatbot()" title="Minimize" aria-label="Minimize">&minus;</button>
+    </div>
+    <div class="chatbot-messages" id="chatMessages"></div>
+    <div class="chatbot-input">
+      <input type="text" id="userInput" placeholder="Ask about earthquake, flood, fire..." />
+      <button id="chatSend" onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer id="helpline">
+    <p id="footer">© 2026 | SafeEdu : Empowering Disaster Preparedness</p>
+  </footer>
+
+  <!-- Leaflet Map JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <!-- Main Script -->
+  <script src="script.js"></script>
+</body>
+</html>
